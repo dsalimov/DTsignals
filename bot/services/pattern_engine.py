@@ -46,7 +46,7 @@ def detect_head_and_shoulders(df: pd.DataFrame) -> Dict[str, Any]:
 
         left_vol = np.mean(volume[max(0, peaks[i] - 3): peaks[i] + 3])
         right_vol = np.mean(volume[max(0, peaks[i + 2] - 3): peaks[i + 2] + 3])
-        vol_confirmed = bool(right_vol < left_vol)
+        vol_confirmed = right_vol < left_vol
 
         confidence = 65
         if vol_confirmed:
@@ -151,7 +151,7 @@ def detect_double_top(df: pd.DataFrame) -> Dict[str, Any]:
 
         vol1 = np.mean(volume[max(0, peaks[i] - 3): peaks[i] + 3])
         vol2 = np.mean(volume[max(0, peaks[i + 1] - 3): peaks[i + 1] + 3])
-        vol_confirmed = bool(vol2 < vol1)
+        vol_confirmed = vol2 < vol1
 
         confidence = 68
         if price_diff < 0.02:
@@ -203,7 +203,7 @@ def detect_double_bottom(df: pd.DataFrame) -> Dict[str, Any]:
 
         vol1 = np.mean(volume[max(0, troughs[i] - 3): troughs[i] + 3])
         vol2 = np.mean(volume[max(0, troughs[i + 1] - 3): troughs[i + 1] + 3])
-        vol_confirmed = bool(vol2 > vol1)
+        vol_confirmed = vol2 > vol1
 
         confidence = 68
         if price_diff < 0.02:
@@ -259,7 +259,7 @@ def detect_ascending_triangle(df: pd.DataFrame) -> Dict[str, Any]:
 
     vol_recent = np.mean(volume[-5:])
     vol_earlier = np.mean(volume[-20:-5])
-    vol_expanding = bool(vol_recent > vol_earlier * 1.2)
+    vol_expanding = vol_recent > vol_earlier * 1.2
 
     confidence = 70
     if near_breakout:
@@ -426,7 +426,7 @@ def detect_flag(df: pd.DataFrame) -> Dict[str, Any]:
 
     vol_pole = np.mean(volume[pole_start:pole_end])
     vol_flag = np.mean(volume[pole_end:])
-    vol_confirmed = bool(vol_flag < vol_pole * 0.7)
+    vol_confirmed = vol_flag < vol_pole * 0.7
 
     confidence = 70
     if vol_confirmed:
@@ -468,7 +468,7 @@ def detect_breakout(df: pd.DataFrame) -> Dict[str, Any]:
         vol_breakout = np.mean(volume[-3:])
         vol_avg = np.mean(volume[-20:-3])
         vol_ratio = float(vol_breakout / vol_avg) if vol_avg > 0 else 1.0
-        vol_confirmed = bool(vol_ratio > 1.5)
+        vol_confirmed = vol_ratio > 1.5
 
         measured_move = resistance - support
         target = resistance + measured_move
@@ -512,7 +512,7 @@ def detect_breakout(df: pd.DataFrame) -> Dict[str, Any]:
             "target": round(float(target), 2),
             "invalidation": round(resistance, 2),
             "vol_ratio": round(vol_ratio, 1),
-            "vol_confirmed": bool(vol_ratio > 1.5),
+            "vol_confirmed": vol_ratio > 1.5,
         }
 
     return {"detected": False}

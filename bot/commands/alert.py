@@ -15,8 +15,9 @@ async def alert_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Alert types:\n"
             "• breakout\n"
             "• unusual_volume\n"
-            "• gamma_squeeze\n\n"
-            "Example: /alert AAPL breakout"
+            "• gamma_squeeze _(coming soon)_\n\n"
+            "Example: /alert AAPL breakout",
+            parse_mode="Markdown",
         )
         return
 
@@ -38,13 +39,18 @@ async def alert_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         type_descriptions = {
             "breakout": "price breakout",
             "unusual_volume": "unusual volume spike",
-            "gamma_squeeze": "gamma squeeze conditions",
+            "gamma_squeeze": "gamma squeeze watch (notifications coming soon)",
         }
+
+        note = ""
+        if alert_type == "gamma_squeeze":
+            note = "\n⚠️ _Gamma squeeze detection is in development. Alert registered but will not trigger until available._\n"
 
         await update.message.reply_text(
             f"✅ *Alert Set!*\n\n"
             f"📌 Ticker: *{ticker}*\n"
-            f"🔔 Alert: {type_descriptions[alert_type]}\n\n"
+            f"🔔 Alert: {type_descriptions[alert_type]}\n"
+            f"{note}\n"
             f"You'll be notified when conditions are met.\n"
             f"Bot checks every minute.",
             parse_mode="Markdown",
