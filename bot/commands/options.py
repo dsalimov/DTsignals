@@ -81,11 +81,12 @@ async def options_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         unusual = chain.get("unusual_calls", []) + chain.get("unusual_puts", [])
         if unusual:
             text += "\n🚨 *Unusual Activity:*\n"
-            unusual_calls_set = {
-                id(u) for u in chain.get("unusual_calls", [])
+            unusual_call_strikes = {
+                (u.get("strike"), u.get("openInterest")) for u in chain.get("unusual_calls", [])
             }
             for u in unusual[:4]:
-                opt_type = "CALL" if id(u) in unusual_calls_set else "PUT"
+                key = (u.get("strike"), u.get("openInterest"))
+                opt_type = "CALL" if key in unusual_call_strikes else "PUT"
                 text += f"  {opt_type} ${u.get('strike', 0):.0f} | Vol/OI spike\n"
 
         gex = chain.get("gex", 0)

@@ -63,7 +63,9 @@ async def _process_alert(context, alert_id: int, chat_id: int, ticker: str, aler
             )
 
     elif alert_type == "gamma_squeeze":
-        # Placeholder — monitoring logic can be expanded later
+        # TODO: Implement gamma squeeze detection by monitoring delta-adjusted GEX
+        # thresholds and dealer hedging flows. Until implemented, this alert type
+        # is registered but will not trigger notifications.
         triggered = False
 
     if triggered and message:

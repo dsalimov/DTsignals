@@ -226,7 +226,7 @@ def get_options_flow(ticker: str) -> Dict[str, Any]:
                     if premium > 50000:
                         flow_type = (
                             "sweep"
-                            if float(row.get("volume", 0)) > float(row.get("openInterest", 1) or 1)
+                            if float(row.get("volume", 0)) > float(row.get("openInterest", 1))
                             else "block"
                         )
                         entry = {
@@ -248,7 +248,7 @@ def get_options_flow(ticker: str) -> Dict[str, Any]:
                     if premium > 50000:
                         flow_type = (
                             "sweep"
-                            if float(row.get("volume", 0)) > float(row.get("openInterest", 1) or 1)
+                            if float(row.get("volume", 0)) > float(row.get("openInterest", 1))
                             else "block"
                         )
                         entry = {
